@@ -1,12 +1,5 @@
 package travelplan.travelplan;
 
-import java.io.IOException;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
@@ -19,12 +12,25 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class LoginServlet extends HttpServlet {
 
-	public void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
-		String userName = req.getParameter("userName");
-		String password = req.getParameter("password");		
+
+import javax.ws.rs.FormParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
+@Path("/login")
+public class LoginModule {
+
+	@POST
+	@Path("/verify")
+	public String verify(@FormParam("userName") String userName,
+			@FormParam("password") String password) {
+		System.out.println(userName);
+		System.out.println(password);
+		UserService userService = UserServiceFactory.getUserService();
+		User user = userService.getCurrentUser();
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
 		Key userKey = KeyFactory.createKey("User", userName);
@@ -39,17 +45,19 @@ public class LoginServlet extends HttpServlet {
 				u.setPassword(password);
 				Gson gson = new GsonBuilder().setPrettyPrinting().create();
 				String jsonUser = gson.toJson(u);
-				System.out.println(jsonUser);				
-				resp.sendRedirect("welcom.jsp?userName="+userName); 
-			} else{
-				resp.sendRedirect("login.html");
-			}
-				
+				System.out.println(jsonUser);
+				return jsonUser;
+				/* resp.sendRedirect("welcom.html"); */
+			} else
+				/* resp.sendRedirect("login.html"); */
+				return "!";
 		} catch (EntityNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			resp.sendRedirect("login.html"); 
-			
+			/* resp.sendRedirect("login.html"); */
+			return "exception";
 		}
+
 	}
+
 }

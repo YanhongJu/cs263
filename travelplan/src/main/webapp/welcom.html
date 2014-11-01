@@ -33,7 +33,6 @@ ul ul {
 	list-style: none;
 	display: none;
 } */
-
 a:link, a:visited {
 	display: block;
 	width: 140px;
@@ -50,6 +49,13 @@ a:hover, a:active {
 	background-color: #CCDDFF;
 }
 </style>
+
+<script type="text/JavaScript">
+	function alert(url) {
+		alert("Please Login First!");
+		
+	}
+</script>
 </head>
 <body>
 	<div id="Layer1"
@@ -58,14 +64,12 @@ a:hover, a:active {
 	</div>
 	<ul>
 		<li><a href="login.html">Login</a></li>
-		<li><a href="">MyBlog</a></li>
-		<li><a href="">MyPlans</a></li>
-		<li><a href="newplan.html">PlanTravel</a>
-			<!-- <ul>
+		<li><a href="login.html" onclick="alert()">MyBlog</a></li>
+		<li><a href="login.html">MyPlans</a></li>
+		<li><a href="login.html">PlanATrip</a> <!-- <ul>
 				<li><a href="">Create a new Plan</a></li>
 				<li><a href="">Edit a Plan</a></li>
-			</ul> -->
-		</li>
+			</ul> --></li>
 
 
 	</ul>

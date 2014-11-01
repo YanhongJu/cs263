@@ -1,8 +1,10 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+	pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-
-<meta charset="utf-8">
-<title>sign up</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Login to MyTravelPlan</title>
 <style type="text/css">
 body {
 	background-color: #f4f4f4;
@@ -76,34 +78,42 @@ form fieldset a:hover {
 	text-decoration: underline;
 }
 </style>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        $("#submit").click(function(){
+            var loginName1 = $("input[name='loginName']").val();    //
+            var password1 = $("input[name='password']").val();        //
+            var jsonUser = {loginName:loginName1, password:password1};    //          
+            var strUser = JSON.stringify(jsonUser);    //           
+            $.post("", {json: strUser}, callback, "json");
+        });
+
+        function callback(json){
+            alert(json.msg);    
+            if(json.suc == 1){    
+                window.location.href = "admin/index.action";    
+            }
+        }
+        
+    });
+</script>
 </head>
 <body>
 	<div id="login">
 		<h1>
-			<strong>Welcome to MyTravelPlan</strong>
+			<strong>Welcome. Please Login.</strong> <a href="signup.html">Sign
+				Up</a>
 		</h1>
-		<form name="thisForm" action="/signup" method="post"
-			onsubmit="return on_submit()">
-			<script type="text/JavaScript">
-				function showJSON() {
-					var user = 
+		<form action="/login" method="post">
 
-					alert(user.username);
-					alert(user.age);
-					alert(user.info.cellphone);
-					alert(user.address[0].city);
-					alert(user.address[0].postcode);
-				}
-			</script>
 			<fieldset>
 				<p>
-					Email:<input type="text" name="userName">
+					UserName:<input type="text" name="userName">
 				</p>
 				<p>
-					Password:<input type="password" name="password1">
-				</p>
-				<p>
-					Enter Password Again:<input type="password" name="password2">
+					Password:<input type="password" name="password">
 				</p>
 				<p>
 					<input type="submit" value="Submit">
@@ -111,6 +121,5 @@ form fieldset a:hover {
 			</fieldset>
 		</form>
 	</div>
-	<!-- end login -->
 </body>
 </html>

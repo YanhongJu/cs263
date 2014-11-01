@@ -5,6 +5,12 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<%
+String loginName = request.getParameter("userName");
+		if (loginName != null && !"".equals(loginName)) {
+			isLogin = true;
+			System.out.println(loginName);
+			pageContext.setAttribute("userName", loginName);
+			%>
 </body>
 </html>
