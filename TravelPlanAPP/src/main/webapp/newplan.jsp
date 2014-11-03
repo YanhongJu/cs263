@@ -1,3 +1,6 @@
+<%@ page import="com.google.appengine.api.users.User"%>
+<%@ page import="com.google.appengine.api.users.UserService"%>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
@@ -15,8 +18,7 @@
 
 		var y = new Date().getFullYear();
 		var str = strYYYY.substring(0, strYYYY.length - 9);
-		for (var i = (y - 30); i < (y + 30); i++) 
-		{
+		for (var i = (y - 30); i < (y + 30); i++) {
 			str += "<option value='" + i + "'> " + i + "</option>\r\n";
 		}
 		document.form1.YYYY.outerHTML = str + "</select>";
@@ -71,30 +73,30 @@
 </head>
 <body>
 	<%
-		String loginName = request.getParameter("userName");
-		pageContext.setAttribute("userName", loginName);
+	UserService userService = UserServiceFactory.getUserService();
+	User userName = userService.getCurrentUser();
+	pageContext.setAttribute("userName", userName);
 	%>
 	<p>Welcom! ${fn:escapeXml(userName)}</p>
-	<form name="form1" action="/createplan?userName=${fn:escapeXml(userName)}" method="post">
+	<form name="form1"
+		action="/context/newplan/enqueue" method="post">
 
 		<fieldset>
 			<p>
-				Name Your New Trip:<input type="text" name="userName">
+				Name Your New Trip:<input type="text" name="planName">
+
 			</p>
 			<p>Enter Your Start Date:</p>
-			<select name=MM onchange="MMDD(this.value)">
+			<select name=YYYY onchange="YYYYMM(this.value)">
+				<option value="">Year</option>
+			</select> <select name=MM onchange="MMDD(this.value)">
 				<option value="">Month</option>
-
 			</select> <select name=DD>
 				<option value="">Day</option>
-			</select> <select name=YYYY onchange="YYYYMM(this.value)">
-				<option value="">Year</option>
-
 			</select>
 
-
 			<p>
-				<input type="submit" value="Create">
+				<input type="submit" value="Submit">
 			</p>
 
 		</fieldset>
