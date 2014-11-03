@@ -1,9 +1,12 @@
 cs263 Project  TravelPlan
+
+http://starlit-tube-728.appspot.com/
+
 =====
 Things have been done:
 1. Welcom page
-2. sign up and login
+2. Login and logout using google account
+3. Create a new trip plan and push into datastore
 
 Things to do next:
-1. after sucessful login, show greeting information on welcom page
-2. allow user to plan a new travel
+Allow users to create details of the plan including finding something to do and something tasty.
