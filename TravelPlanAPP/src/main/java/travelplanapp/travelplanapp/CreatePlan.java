@@ -1,6 +1,8 @@
 package travelplanapp.travelplanapp;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
+import java.net.URI;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -10,8 +12,11 @@ import javax.ws.rs.core.Context;
 
 
 
+
+
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -29,11 +34,11 @@ public class CreatePlan {
 		UserService userService = UserServiceFactory.getUserService();
 		User userName = userService.getCurrentUser();
 		String date = yyyy + "-" + mm + "-" + dd;
-		Queue queue = QueueFactory.getDefaultQueue();		
-        queue.add(withUrl("/createplanworker").param("planName", planName).param("date",date));
-        //response.sendRedirect("/done.html");
-		System.out.println(userName + planName + date);
+		Queue queue = QueueFactory.getDefaultQueue();			
+        queue.add(withUrl("/context/worker/createplan").param("planName", planName).param("date",date));
+        System.out.println(userName + planName + date);
 		servletResponse.sendRedirect("/plandetails.jsp?planName="+planName+"&date="+date);
+        //servletResponse.sendRedirect("/activity.html");
 		
 	}
 }

@@ -7,6 +7,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+<link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
+<style>
+#formpage {clear ="both";
+}
+</style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <script language="JavaScript">
@@ -73,36 +78,54 @@
 </head>
 <body>
 	<%
-	UserService userService = UserServiceFactory.getUserService();
-	User userName = userService.getCurrentUser();
-	pageContext.setAttribute("userName", userName);
+		UserService userService = UserServiceFactory.getUserService();
+		User userName = userService.getCurrentUser();
+		pageContext.setAttribute("userName", userName);
 	%>
-	<p>Welcom! ${fn:escapeXml(userName)}</p>
-	<form name="form1"
-		action="/context/newplan/enqueue" method="post">
+	<div id="container">
+		<div id="header" class="headernav">
+			<h3 float="right">Welcom! ${fn:escapeXml(userName)}</h3>
+			<ul>
+				<li><a
+					href="<%=userService.createLogoutURL(request.getRequestURI())%>">sign
+						out</a></li>
+				<li><a href="">MyBlog</a></li>
+				<li><a href="">MyPlans</a></li>
+				<li><a href="newplan.jsp">PlanATrip</a>
+				<li><a href="welcom.jsp">Home</a> <!-- <ul>
+				<li><a href="">Create a new Plan</a></li>
+				<li><a href="">Edit a Plan</a></li>
+			</ul> --></li>
+			</ul>
+		</div>
+		<div class="formpage">
+			<form name="form1" action="/context/newplan/enqueue" method="post">
 
-		<fieldset>
-			<p>
-				Name Your New Trip:<input type="text" name="planName">
+				<fieldset>
+					<p>
+						Name Your New Trip:<input type="text" name="planName">
 
-			</p>
-			<p>Enter Your Start Date:</p>
-			<select name=YYYY onchange="YYYYMM(this.value)">
-				<option value="">Year</option>
-			</select> <select name=MM onchange="MMDD(this.value)">
-				<option value="">Month</option>
-			</select> <select name=DD>
-				<option value="">Day</option>
-			</select>
+					</p>
+					<p>Enter Your Start Date:</p>
+					<select name=YYYY onchange="YYYYMM(this.value)">
+						<option value="">Year</option>
+					</select> <select name=MM onchange="MMDD(this.value)">
+						<option value="">Month</option>
+					</select> <select name=DD>
+						<option value="">Day</option>
+					</select>
 
-			<p>
-				<input type="submit" value="Submit">
-			</p>
+					<p>
+						<input type="submit" value="Submit">
+					</p>
 
-		</fieldset>
+				</fieldset>
 
 
-	</form>
+			</form>
+
+		</div>
+	</div>
 
 
 </body>

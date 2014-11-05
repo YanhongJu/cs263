@@ -21,14 +21,14 @@
 		<url-pattern>/context/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
+	<!-- <servlet>
 		<servlet-name>createPlanWorker</servlet-name>
 		<servlet-class>travelplanapp.travelplanapp.CreatePlanWorker</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>createPlanWorker</servlet-name>
 		<url-pattern>/createplanworker</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
 
 
 	<welcome-file-list>

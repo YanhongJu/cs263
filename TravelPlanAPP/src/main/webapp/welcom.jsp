@@ -9,60 +9,35 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<style>
-ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-li {
-	float: right;
-}
-
-a:link, a:visited {
-	display: block;
-	width: 140px;
-	font-size: 160%;
-	font-weight: bold;
-	color: white;
-	background-color:;
-	text-align: center;
-	padding: 4px;
-	text-decoration: none;
-}
-
-a:hover, a:active {
-	background-color: #CCDDFF;
-}
-</style>
+<link type="text/css" rel="stylesheet" href="/stylesheets/header.css"/>
 </head>
 <body>
-<div id="Layer1"
-		style="position: absolute; width: 100%; height: 100%; z-index: -1">
-		<img src="images\back.jpg" height="100%" width="100%" />
-</div>
+	
 	<%
 		UserService userService = UserServiceFactory.getUserService();
 		User userName = userService.getCurrentUser();
 		if (userName != null) {
 			pageContext.setAttribute("userName", userName);
 	%>
-	<h3>Welcom! ${fn:escapeXml(userName)}</h3>
-	<ul>
-		<li><a href="<%= userService.createLogoutURL(request.getRequestURI()) %>">sign out</a></li>		
-		<li><a href="">MyBlog</a></li>
-		<li><a href="">MyPlans</a></li>
-		<li><a href="newplan.jsp">PlanATrip</a>
-			<!-- <ul>
+	<div class="headernav">
+		<h3 float="right">Welcom! ${fn:escapeXml(userName)}</h3>
+		<ul>
+			<li><a
+				href="<%=userService.createLogoutURL(request.getRequestURI())%>">sign
+					out</a></li>
+			<li><a href="">MyBlog</a></li>
+			<li><a href="">MyPlans</a></li>
+			<li><a href="newplan.jsp">PlanATrip</a>
+			<li><a href="welcom.jsp">Home</a> <!-- <ul>
 				<li><a href="">Create a new Plan</a></li>
 				<li><a href="">Edit a Plan</a></li>
 			</ul> --></li>
-	</ul>
+		</ul>	
+		</div>
 	<%
 		} else {
 	%>
+<div class="headernav">
 	<ul>
 		<li><a
 			href="<%=userService.createLoginURL(request.getRequestURI())%>">SignIn</a></li>
@@ -75,17 +50,18 @@ a:hover, a:active {
 			<!-- <ul>
 			<li><a href="">Create a new Plan</a></li>
 			<li><a href="">Edit a Plan</a></li>
-			</ul> -->
-		</li>
+			</ul> --></li>
 
 
 	</ul>
+	</div>
 	<%
 		}
 	%>
-
-
-
+	<div id="Layer1" clear="both"
+		style="position: absolute; width: 100%; height: 100%; z-index: -1">
+		<img src="images\back.jpg" height="100%" width="100%" />
+	</div >	
 
 </body>
 
