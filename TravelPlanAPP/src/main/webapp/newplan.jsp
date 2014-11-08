@@ -99,7 +99,7 @@
 			</ul>
 		</div>
 		<div class="formpage">
-			<form name="form1" action="/context/newplan/enqueue" method="post">
+			<form name="form1" action="/context/enqueue/newplan" method="post">
 
 				<fieldset>
 					<p>

@@ -147,25 +147,26 @@
 			<div class="leftbody">
 				<div class="nav" align="center">
 					<ul>
-						<li><a style="color: black" href="#">Activities</a></li>
+						<li><a style="color: black" href="plandetails.jsp?planName=${fn:escapeXml(planName)}">Activities</a></li>
 						<!-- <li><a style="color: black" href="try.html?"
 							target="iframe_a">Activities</a></li> -->
 						<li><a style="color: black"
-							href="food.jsp?planName=${fn:escapeXml(planName)}">Food &
+							href="#">Food &
 								Drinks</a></li>
 						<li><a style="color: black"
 							href="hotel.jsp?planName=${fn:escapeXml(planName)}">Hotels</a></li>
 						<li><a style="color: black"
 							href="flight.jsp?planName=${fn:escapeXml(planName)}">Flights</a></li>
+
 					</ul>
 				</div>
 
 				<fieldset style="margin-left: 8px; margin-right: 2px">
 					<form
-						action="/context/search/activity?planName=${fn:escapeXml(planName)}"
+						action="/context/search/food?planName=${fn:escapeXml(planName)}"
 						method="post" target="_blank">
 
-						<p>Want suggestions? Find something to do in</p>
+						<p>Want suggestions? Find something tasty in</p>
 						<p>
 							<input id="pac-input1" class="controls" type="text"
 								placeholder="Please enter a city" autocomplete="on"
@@ -177,13 +178,13 @@
 
 
 					<form
-						action="/context/enqueue/newactivity/?planName=${fn:escapeXml(planName)}"
+						action="/context/enqueue/newfood?planName=${fn:escapeXml(planName)}"
 						method="post">
 
 
 						<p>Or you can enter your activity details:</p>
 						<p>
-							Title:<input type="text" name="activityTitle" style="width: 80%">
+							Restaurant Name:<input type="text" name="restaurant" style="width: 80%">
 						</p>
 						<p>
 							Address:<input id="pac-input" name="address" class="controls"

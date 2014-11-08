@@ -4,7 +4,15 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="com.google.appengine.api.datastore.Query"%>
 <%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
+<%@ page import="com.google.appengine.api.datastore.Key"%>
+<%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
+<%@ page import="com.google.appengine.api.datastore.Query.Filter"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterPredicate"%>
+<%@ page
+	import="com.google.appengine.api.datastore.Query.FilterOperator"%>
+
 <%@ page
 	import="com.google.appengine.api.datastore.DatastoreServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.Entity"%>
@@ -27,18 +35,20 @@
 	width: 35%;
 	height: 100%;
 }
-.rightbody p{
-	padding:10px 10px;
-	margin:10px 10px
-}</style>
+
+.rightbody p {
+	padding: 10px 10px;
+	margin: 10px 10px
+}
+</style>
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script type="text/javascript">
-	/* function initialize() {
-		var input = document.getElementById('pac-input');
-		var autocomplete = new google.maps.places.Autocomplete(input);
+	function initialize1() {
+		var input1 = document.getElementById('pac-input1');
+		var autocomplete1 = new google.maps.places.Autocomplete(input1);
 	}
-	google.maps.event.addDomListener(window, 'load', initialize); */
+	google.maps.event.addDomListener(window, 'load', initialize1);
 	function initialize() {
 		var input = /** @type {HTMLInputElement} */
 		(document.getElementById('pac-input'));
@@ -54,6 +64,8 @@
 	<%
 		String planName = request.getParameter("planName");
 		pageContext.setAttribute("planName", planName);
+		String userName = request.getParameter("userName");
+		pageContext.setAttribute("userName", userName);
 	%>
 	<!-- <p>
 		<font size="6">Find things to do in:</font>
@@ -66,6 +78,19 @@
 
 	<div class="container">
 		<div class="leftbody">
+			<form
+				action="/context/search/activity?planName=${fn:escapeXml(planName)}"
+				method="post" target="_blank">
+
+				<p>Want suggestions? Find something to do in</p>
+				<p>
+					<input id="pac-input1" class="controls" type="text"
+						placeholder="Please enter a city" autocomplete="on"
+						name="searchCity"> <input type="submit" value="Submit">
+				</p>
+
+			</form>
+
 
 
 			<form
@@ -73,6 +98,7 @@
 				method="post">
 
 				<fieldset>
+					<p>Or you can enter your activity details:</p>
 					<p>
 						Title:<input type="text" name="activityTitle" style="width: 80%">
 					</p>
@@ -122,27 +148,66 @@
 			<p>Plan Summary:</p>
 			<%
 				DatastoreService datastore = DatastoreServiceFactory
-						.getDatastoreService();
-				/* Key userKey = KeyFactory.createKey("User", userName.toString());
-				Key planKey = KeyFactory.createKey(userKey, "Plan", planName); */
+						.getDatastoreService();				
+				
+				/* 
+				datastore.get(planKey).getKey();
+				pageContext.setAttribute("planKey", planKey); */
 				// Run an ancestor query to ensure we see the most up-to-date
 				// view of the Greetings belonging to the selected Guestbook.
-				Query q = new Query("Activity");
-				//Query q = new Query("Activity").setAncestor(planKey);
+				//Query q = new Query("Activity");
+
+				/* Filter propertyFilter = new FilterPredicate("user",
+						FilterOperator.EQUAL, userName.toString()); 
+				
+				.setFilter(propertyFilter)*/
+				Key userKey = KeyFactory.createKey("User", userName);		
+				Key planKey = KeyFactory.createKey(userKey, "Plan", planName);
+				pageContext.setAttribute("planKey", planKey);
+				Query q = new Query("Activity")
+						.setAncestor(planKey);
 				PreparedQuery pq = datastore.prepare(q);
 				for (Entity result : pq.asIterable()) {
 					String activityTitle = (String) result
 							.getProperty("activityTitle");
 					String day = (String) result.getProperty("day");
+					pageContext.setAttribute("parentKey", result.getParent());
 					pageContext.setAttribute("activityTitle", activityTitle);
 					pageContext.setAttribute("day", day);
 			%>
 			<p>
-				Day ${fn:escapeXml(day)} : ${fn:escapeXml(activityTitle)}
+			
+			User: ${fn:escapeXml(userName)}
+
+				Day ${fn:escapeXml(day)} : ${fn:escapeXml(activityTitle)}  : ${fn:escapeXml(parentKey)}  : ${fn:escapeXml(planKey)}
 				<%
 					}
 				%>
+				
+				<%
+			Query qq = new Query("Plan");
+			PreparedQuery pqq = datastore.prepare(qq);
+			for (Entity result : pqq.asIterable()) {
+				String planName1 = (String) result
+						.getProperty("planName");
+				String startdate = (String) result.getProperty("day");
+				pageContext.setAttribute("planName1", planName1);
+				pageContext.setAttribute("startdate", startdate);
+				pageContext.setAttribute("parentKey1", result.getParent());
+		%>
+
+
+		<p>
+			planName1 ${fn:escapeXml(planName1)} : ${fn:escapeXml(startdate)}: ${fn:escapeXml(parentKey1)}
+			<%
+				}
+			%>
 			
 		</div>
+
+		
+		
+		
+	</div>
 </body>
 </html>

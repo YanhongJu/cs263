@@ -35,7 +35,7 @@ public class CreatePlan {
 		User userName = userService.getCurrentUser();
 		String date = yyyy + "-" + mm + "-" + dd;
 		Queue queue = QueueFactory.getDefaultQueue();			
-        queue.add(withUrl("/context/worker/createplan").param("planName", planName).param("date",date));
+        queue.add(withUrl("/context/worker/createplan").param("planName", planName).param("date",date).param("userName", userName.toString()));
         System.out.println(userName + planName + date);
 		servletResponse.sendRedirect("/plandetails.jsp?planName="+planName+"&date="+date);
         //servletResponse.sendRedirect("/activity.html");
