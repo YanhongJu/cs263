@@ -2,6 +2,7 @@ cs263 Project  TravelPlan
 http://starlit-tube-728.appspot.com/
 
 ==========11/07==============
+
 Things have been done:
 
 1. Allow users to add plan details(food and activity), store details in datastore
