@@ -9,6 +9,7 @@ Things have been done:
 3. Allow users to search activities or food in a certian place,  show results in google map
 
 Things to do next:
+
 1. Show details(title, picture,rate) of search results(food or activity) in a list
 2. allow users to add an activity or food in a certain plan by clicking the search result.
 
