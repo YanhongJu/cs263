@@ -1,7 +1,4 @@
-<%@ page import="com.google.appengine.api.users.User"%>
-<%@ page import="com.google.appengine.api.users.UserService"%>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,34 +47,7 @@
 				myOptions);
 
 		getAddress();
-	}
 
-	function addList(results, status, pagination) {
-
-		if (status == google.maps.places.PlacesServiceStatus.OK) {
-			//document.getElementById('list').innerHTML += ('length     ' + results.length);
-			for (var i = 0; i < results.length; i++) {
-				addPhoto(results[i]);
-			}
-			if (pagination.hasNextPage) {
-				pagination.nextPage();
-			}
-		} else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-			alert('Sorry, nothing is found');
-		}
-
-	}
-	function addPhoto(obj) {
-		document.getElementById('list').innerHTML += ('<div class ="photo" style="width:33%; float:left">'
-				+ obj.name
-				+ '<br/>'
-				+ 'rating:'
-				+ obj.rating
-				+ '<br/>'
-				+ '<img src="' + obj.photos[0].getUrl({
-					'maxWidth' : 200,
-					'maxHeight' : 200
-				}) + '" style="width:200px; height:200px"/><br/>' + '</div>');
 	}
 
 	function clearOverlays() {
@@ -113,14 +83,57 @@
 		}
 		return httprequest.QueryString(param);
 	}
+
+	function addList(results, status, pagination) {
+
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			document.getElementById('list').innerHTML +=('length     '+ results.length);			
+			for (var i = 0; i < results.length; i++) {
+				addPhoto(results[i]);				
+			}
+			if (pagination.hasNextPage) {				
+				pagination.nextPage();
+			}
+		} else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+			alert('Sorry, nothing is found');
+		}
+
+	} 
+	function addPhoto(obj) {
+		document.getElementById('list').innerHTML += ('<div class ="photo" style="width:33%; float:left">'
+				+ obj.name
+				+ '<br/>'
+				+ 'rating:'
+				+ obj.rating
+				+ '<br/>'
+				+ '<img src="' + obj.photos[0].getUrl({
+					'maxWidth' : 200,
+					'maxHeight' : 200
+				}) + '" style="width:200px; height:200px"/><br/>' + '</div>');
+	} 
 	function createMarkers(results, status, pagination) {
 		if (status == google.maps.places.PlacesServiceStatus.OK) {
 
-			if (pagination.hasNextPage) {
-				pagination.nextPage();
-			}
+			/* if (pagination.hasNextPage) {
+				var moreButton = document.getElementById('more');
+
+				moreButton.disabled = false;
+
+				google.maps.event.addDomListenerOnce(moreButton, 'click',
+						function() {
+							moreButton.disabled = true;
+							pagination.nextPage();
+						});
+			} */
+
 			for (var i = 0; i < results.length; i++) {
 				createMarker(results[i]);
+				//addList(results[i]);
+			}
+
+			if (pagination.hasNextPage) {
+				sleep: 2;
+				pagination.nextPage();
 			}
 		} else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
 			alert('Sorry, nothing is found');
@@ -128,7 +141,7 @@
 	}
 
 	// creare single marker function
-	function createMarker(obj) {
+	function createMarker(obj) {		
 
 		// prepare new Marker object
 		var mark = new google.maps.Marker({
@@ -174,7 +187,8 @@
 								document.getElementById('lng').value = results[0].geometry.location
 										.lng();
 
-								var request = {
+								/* var request = {
+									query: 'places in '+ address,
 									location : addrLocation,
 									radius : '5000',
 									types : [ 'amusement_park', 'aquarium',
@@ -182,6 +196,16 @@
 											'city_hall', 'mosque', 'museum',
 											'park', 'zoo', 'night_club',
 											'movie_theater' ]
+								};
+								 */
+
+								var request = {
+									location : addrLocation,
+									radius : '5000',
+									types : [ 'amusement_park', 'aquarium',
+											'art_gallery', 'church',
+											'city_hall', 'mosque', 'museum',
+											'park', 'zoo', 'movie_theater' ]
 								};
 
 								// send request
@@ -205,12 +229,13 @@
 
 	<div class="container">
 
-		<%
-			UserService userService = UserServiceFactory.getUserService();
-			User userName = userService.getCurrentUser();
-			pageContext.setAttribute("userName", userName);
-		%>
-		<div class="leftbody"><div id="list"></div></div>
+		<% UserService userService = UserServiceFactory.getUserService(); User
+		userName = userService.getCurrentUser();
+		pageContext.setAttribute("userName", userName); %>
+		<div class="leftbody">
+			hhhh ${fn:escapeXml(userName)}
+			<div id="list"></div>
+		</div>
 		<div class="rightbody">
 			<input type="hidden" id="lat" name="lat" value="40.7143528" /> <input
 				type="hidden" id="lng" name="lng" value="-74.0059731" />

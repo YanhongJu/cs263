@@ -127,6 +127,35 @@ float:left;
 		});
 		infos.push(infowindow);
 	}
+
+	function addList(results, status, pagination) {
+
+		if (status == google.maps.places.PlacesServiceStatus.OK) {
+			//document.getElementById('list').innerHTML += ('length     ' + results.length);
+			for (var i = 0; i < results.length; i++) {
+				addPhoto(results[i]);
+			}
+			if (pagination.hasNextPage) {
+				pagination.nextPage();
+			}
+		} else if (status == google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+			alert('Sorry, nothing is found');
+		}
+
+	}
+	function addPhoto(obj) {
+		document.getElementById('list').innerHTML += ('<div class ="photo" style="width:33%; float:left">'
+				+ obj.name
+				+ '<br/>'
+				+ 'rating:'
+				+ obj.rating
+				+ '<br/>'
+				+ '<img src="' + obj.photos[0].getUrl({
+					'maxWidth' : 200,
+					'maxHeight' : 200
+				}) + '" style="width:200px; height:200px"/><br/>' + '</div>');
+	}
+
 	function getAddress() {
 
 		geocoder = new google.maps.Geocoder();
@@ -155,7 +184,9 @@ float:left;
 								// send request
 								service = new google.maps.places.PlacesService(
 										map);
+								service.search(request, addList);
 								service.search(request, createMarkers);
+								
 
 							} else {
 								alert('Geocode was not successful for the following reason: '
@@ -178,7 +209,7 @@ float:left;
 		pageContext.setAttribute("userName", userName);
 		
 	%>
-		<div class="leftbody">hhhh   ${fn:escapeXml(userName)}</div>
+		<div class="leftbody"><div id="list"></div></div>
 		<div class="rightbody">
 			<input type="hidden" id="lat" name="lat" value="40.7143528" /> <input
 				type="hidden" id="lng" name="lng" value="-74.0059731" />
