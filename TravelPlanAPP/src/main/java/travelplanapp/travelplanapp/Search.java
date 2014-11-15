@@ -16,7 +16,7 @@ public class Search {
 	public void searchActivityPost(@FormParam("searchCity") String searchCity,			
 			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {		
 		String planName = request.getParameter("planName");			
-		response.sendRedirect("/searchactivity.jsp?query="+searchCity+"planName="+planName);
+		response.sendRedirect("/searchactivity.jsp?query="+searchCity+"&planName="+planName);
 		
 
 	}
@@ -26,7 +26,7 @@ public class Search {
 	public void searchFoodPost(@FormParam("searchCity") String searchCity,			
 			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {		
 		String planName = request.getParameter("planName");			
-		response.sendRedirect("/searchfood.jsp?query="+searchCity+"planName="+planName);
+		response.sendRedirect("/searchfood.jsp?query="+searchCity+"&planName="+planName);
 		
 
 	}
