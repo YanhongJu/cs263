@@ -2,6 +2,17 @@ cs263 Project  TravelPlan
 
 http://starlit-tube-728.appspot.com/
 
+==========11/014==============
+
+What have been done:
+
+1. Fix the bug in showing photos
+2. Enable the links for user to add activity from search result
+What to do next:
+
+1. Allow user to check their existed plan
+2. Allow user to update their existed plan.
+
 ==========11/09==============
 
 What have been done:
