@@ -2,6 +2,17 @@ cs263 Project  TravelPlan
 
 http://starlit-tube-728.appspot.com/
 
+==========11/16==============
+
+What have been done:
+
+1. Allow users to check and update their existed plan
+2. Allow users to add hotel and flight information
+
+What to do next:
+
+1. Allow user to create their photo album
+
 ==========11/14==============
 
 What have been done:
