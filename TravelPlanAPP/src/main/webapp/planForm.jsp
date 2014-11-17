@@ -82,16 +82,9 @@
 		pageContext.setAttribute("activityTitle", activityTitle);
 		String address = request.getParameter("address");
 		pageContext.setAttribute("address", address);
-		String notes = request.getParameter("notes");
-		pageContext.setAttribute("notes", notes);
-		String day = request.getParameter("day");
-		pageContext.setAttribute("day", day);
-		String date = request.getParameter("date");		
-		pageContext.setAttribute("date", date);
-		
 	%>
 	<form
-		action="/context/enqueue/newactivity/?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}"
+		action="/context/enqueue/newactivity/?planName=${fn:escapeXml(planName)}"
 		method="post">
 
 		<p>
@@ -108,7 +101,7 @@
 		<div style="position: relative;">
 			<p>Day</p>
 			<span style="margin-left: 100px; width: 18px; overflow: hidden;">
-				<select style="width: 118px; margin-left: -100px" value="${fn:escapeXml(day)}"
+				<select style="width: 118px; margin-left: -100px"
 				onchange="this.parentNode.nextSibling.value=this.value">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -132,7 +125,7 @@
 				style="width:40%">
 		</div>
 		<p>
-			Notes:<input type="text" name="notes" style="width: 90%" value="${fn:escapeXml(notes)}">
+			Notes:<input type="text" name="notes" style="width: 90%">
 		</p>
 
 		<p>

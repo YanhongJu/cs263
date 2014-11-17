@@ -11,7 +11,6 @@
 <%@ page import="com.google.appengine.api.datastore.PreparedQuery"%>
 <%@ page import="com.google.appengine.api.datastore.DatastoreService"%>
 <%@ page import="com.google.appengine.api.datastore.Query.Filter"%>
-<%@ page import="com.google.appengine.api.datastore.Query.SortDirection"%>
 <%@ page
 	import="com.google.appengine.api.datastore.Query.FilterPredicate"%>
 <%@ page
@@ -121,10 +120,10 @@
 			<h3 float="right">Welcom! ${fn:escapeXml(userName)}</h3>
 			<ul>
 				<li><a
-					href="<%=userService.createLogoutURL("welcom.jsp")%>">Sign
+					href="<%=userService.createLogoutURL(request.getRequestURI())%>">sign
 						out</a></li>
-				<li><a href="album.jsp">MyAlbum</a></li>
-				<li><a href="allplans.jsp">MyPlans</a></li>
+				<li><a href="">MyBlog</a></li>
+				<li><a href="">MyPlans</a></li>
 				<li><a href="newplan.jsp">PlanATrip</a>
 				<li><a href="welcom.jsp">Home</a> <!-- <ul>
 				<li><a href="">Create a new Plan</a></li>
@@ -148,16 +147,16 @@
 			<div class="leftbody">
 				<div class="nav" align="center">
 					<ul>
-						<li><a style="color: black" href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Activities</a></li>
+						<li><a style="color: black" href="plandetails.jsp?planName=${fn:escapeXml(planName)}">Activities</a></li>
 						<!-- <li><a style="color: black" href="try.html?"
 							target="iframe_a">Activities</a></li> -->
-						<li><a style="color: black; background: #0489B1"
+						<li><a style="color: black"
 							href="#">Food &
 								Drinks</a></li>
 						<li><a style="color: black"
-							href="hotel.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Hotels</a></li>
+							href="hotel.jsp?planName=${fn:escapeXml(planName)}">Hotels</a></li>
 						<li><a style="color: black"
-							href="flight.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Flights</a></li>
+							href="flight.jsp?planName=${fn:escapeXml(planName)}">Flights</a></li>
 
 					</ul>
 				</div>
@@ -165,7 +164,7 @@
 				<fieldset style="margin-left: 8px; margin-right: 2px">
 					<form
 						action="/context/search/food?planName=${fn:escapeXml(planName)}"
-						method="post" >
+						method="post" target="_blank">
 
 						<p>Want suggestions? Find something tasty in</p>
 						<p>
@@ -179,13 +178,13 @@
 
 
 					<form
-						action="/context/enqueue/newactivity?planName=${fn:escapeXml(planName)}"
+						action="/context/enqueue/newfood?planName=${fn:escapeXml(planName)}"
 						method="post">
 
 
 						<p>Or you can enter your activity details:</p>
 						<p>
-							Restaurant Name:<input type="text" name="activityTitle" style="width: 80%">
+							Restaurant Name:<input type="text" name="restaurant" style="width: 80%">
 						</p>
 						<p>
 							Address:<input id="pac-input" name="address" class="controls"
@@ -234,7 +233,7 @@
 			</div>
 
 			<div class="rightbody">
-				<p>Plan Summary(start at ${fn:escapeXml(date)}):</p>
+				<p>Plan Summary:</p>
 				<%
 					DatastoreService datastore = DatastoreServiceFactory
 							.getDatastoreService();
@@ -253,7 +252,7 @@
 					Key userKey = KeyFactory.createKey("User", userName);
 					Key planKey = KeyFactory.createKey(userKey, "Plan", planName);
 					pageContext.setAttribute("planKey", planKey);
-					Query q = new Query("Activity").setAncestor(planKey).addSort("day", SortDirection.ASCENDING);
+					Query q = new Query().setAncestor(planKey);
 					//Query q = new Query("Activity");
 					PreparedQuery pq = datastore.prepare(q);
 					for (Entity result : pq.asIterable()) {
