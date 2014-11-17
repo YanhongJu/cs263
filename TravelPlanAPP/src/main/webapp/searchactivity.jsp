@@ -141,7 +141,8 @@
 															+ place.name
 															+ '&planName='
 															+ getParam('planName')
-
+															+ '&date='
+															+ getParam('date')
 															+ '" target="_blank">Add To Plan</a></h2>'
 
 															+ '<img src="' + place.icon + '" /><font style="font-size: 20px; color:black;">'
@@ -236,34 +237,29 @@
 		});
 		markers.push(mark);
 
-		google.maps.event
-		.addListener(
-				mark,
-				'click',
-				function() {
-					var address;
-					geocoder.geocode({
-						'latLng' : obj.geometry.location
-					}, function(results, status) {
+		google.maps.event.addListener(mark, 'click', function() {
+			var address;
+			geocoder.geocode({
+				'latLng' : obj.geometry.location
+			}, function(results, status) {
 
-						if (status == google.maps.GeocoderStatus.OK) {
-							if (results[0]) {
-								
-								address = results[0].formatted_address;										
-								addInfoWindow(address,mark,obj);
-							} else {
-								alert('No results found');
-							}
-						} else {
-							alert('Geocoder failed due to: ' + status);
-						}
-					});
-					
-					
-				});
+				if (status == google.maps.GeocoderStatus.OK) {
+					if (results[0]) {
+
+						address = results[0].formatted_address;
+						addInfoWindow(address, mark, obj);
+					} else {
+						alert('No results found');
+					}
+				} else {
+					alert('Geocoder failed due to: ' + status);
+				}
+			});
+
+		});
 	}
-	
-	function addInfoWindow(address, mark, obj){		
+
+	function addInfoWindow(address, mark, obj) {
 		var infowindow = new google.maps.InfoWindow(
 				{
 					content : '<div class="infowin"> <h2><a href="planForm.jsp?address='
@@ -272,7 +268,8 @@
 							+ obj.name
 							+ '&planName='
 							+ getParam('planName')
-
+							+ '&date='
+							+ getParam('date')
 							+ '" target="_blank">Add To Plan</a></h2>'
 
 							+ '<img src="' + obj.icon + '" /><font style="font-size: 20px; color:black;">'
@@ -286,8 +283,7 @@
 							+ '<br />Address: '
 							+ '<font style="font-size: 15px">'
 							+ address
-							+ '</font>'
-							+ '</font> </div>'
+							+ '</font>' + '</font> </div>'
 				});
 		clearInfos();
 		infowindow.open(map, mark);

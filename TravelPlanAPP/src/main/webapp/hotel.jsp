@@ -151,44 +151,29 @@
 						<li><a style="color: black" href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Activities</a></li>
 						<!-- <li><a style="color: black" href="try.html?"
 							target="iframe_a">Activities</a></li> -->
-						<li><a style="color: black; background: #0489B1"
-							href="#">Food &
-								Drinks</a></li>
 						<li><a style="color: black"
-							href="hotel.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Hotels</a></li>
+							href="food.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Food &
+								Drinks</a></li>
+						<li><a style="color: black ; background: #0489B1"
+							href="">Hotels</a></li>
 						<li><a style="color: black"
 							href="flight.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Flights</a></li>
 
 					</ul>
 				</div>
 
-				<fieldset style="margin-left: 8px; margin-right: 2px">
-					<form
-						action="/context/search/food?planName=${fn:escapeXml(planName)}"
-						method="post" >
-
-						<p>Want suggestions? Find something tasty in</p>
-						<p>
-							<input id="pac-input1" class="controls" type="text"
-								placeholder="Please enter a city" autocomplete="on"
-								name="searchCity"> <input type="submit" value="Submit">
-						</p>
-
-					</form>
-
+				<fieldset style="margin-left: 8px; margin-right: 2px">				
 
 
 					<form
 						action="/context/enqueue/newactivity?planName=${fn:escapeXml(planName)}"
 						method="post">
-
-
-						<p>Or you can enter your activity details:</p>
+						
 						<p>
-							Restaurant Name:<input type="text" name="activityTitle" style="width: 80%">
+							Hotel Name:<input type="text" name="activityTitle" style="width: 80%">
 						</p>
 						<p>
-							Address:<input id="pac-input" name="address" class="controls"
+							Hotel Address:<input id="pac-input" name="address" class="controls"
 								type="text" placeholder="Enter a location" style="width: 80%">
 						</p>
 

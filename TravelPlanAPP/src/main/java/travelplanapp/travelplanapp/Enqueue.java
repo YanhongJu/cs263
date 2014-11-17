@@ -33,7 +33,7 @@ public class Enqueue {
 		Queue queue = QueueFactory.getDefaultQueue();			
         queue.add(withUrl("/context/worker/createplan").param("planName", planName).param("date",date).param("userName", userName.toString()));
         System.out.println(userName + planName + date);
-		servletResponse.sendRedirect("/plandetails.jsp?planName="+planName+"&date="+date);
+		servletResponse.sendRedirect("/activity.jsp?planName="+planName+"&date="+date);
         //servletResponse.sendRedirect("/activity.html");
 		
 	}
@@ -41,25 +41,84 @@ public class Enqueue {
 	
 	@POST
 	@Path("/newactivity")	
-	public void newActivity(@FormParam("activityTitle") String activityTitle,
+	public void newActivity(@FormParam("activityTitle") String title,
 			@FormParam("address") String address,
 			@FormParam("notes") String notes, @FormParam("day") String day,
 			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {
 		UserService userService = UserServiceFactory.getUserService();
 		User userName = userService.getCurrentUser();
-		String planName = request.getParameter("planName");
-		System.out.println("in queueue" +planName+" "+activityTitle+" "+address+" "+notes);
+		String planName = request.getParameter("planName");	
+		String date = request.getParameter("date");	
+		
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withUrl("/context/worker/createactivity")
-				.param("planName", planName)
-				.param("activityTitle", activityTitle).param("address", address)
+				.param("planName", planName)				
+				.param("title", title).param("address", address)
+				.param("day", day).param("notes", notes)
+				.param("userName", userName.toString()));
+		Thread.sleep(100);		
+		response.sendRedirect("/activity.jsp?planName="+planName+"&date="+date);
+	}
+	
+	@POST
+	@Path("/updateactivity")	
+	public void updateActivity(@FormParam("activityTitle") String title,
+			@FormParam("address") String address,
+			@FormParam("notes") String notes, @FormParam("day") String day,
+			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {
+		UserService userService = UserServiceFactory.getUserService();
+		User userName = userService.getCurrentUser();
+		String planName = request.getParameter("planName");	
+		String startDate = request.getParameter("startDate");	
+
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(withUrl("/context/worker/createactivity")
+				.param("planName", planName)				
+				.param("title", title).param("address", address)
 				.param("day", day).param("notes", notes)
 				.param("userName", userName.toString()));
 		Thread.sleep(100);
-		response.sendRedirect("/plandetails.jsp?planName="+planName);
+		response.sendRedirect("/plandetails.jsp?planName="+planName+"&startDate="+startDate);
+	}
+	
+	
+	@POST
+	@Path("/deleteactivity")	
+	public void deleteActivity(@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {
+		UserService userService = UserServiceFactory.getUserService();
+		User userName = userService.getCurrentUser();
+		String planName = request.getParameter("planName");	
+		String title = request.getParameter("title");
+		String startDate = request.getParameter("startDate");
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(withUrl("/context/worker/deleteactivity")
+				.param("planName", planName)
+				.param("title", title)
+				.param("userName", userName.toString()));
+		Thread.sleep(50);
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		response.sendRedirect("/plandetails.jsp?planName="+planName+"&startDate="+startDate);
 		// servletResponse.sendRedirect("/activity.html");
 
 	}
+	
+	@POST
+	@Path("/deleteplan")	
+	public void deletePlan(@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {
+		UserService userService = UserServiceFactory.getUserService();
+		User userName = userService.getCurrentUser();
+		String planName = request.getParameter("planName");			
+		
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(withUrl("/context/worker/deleteplan")
+				.param("planName", planName)				
+				.param("userName", userName.toString()));
+		Thread.sleep(100);
+		response.sendRedirect("/allplans.jsp");
+		// servletResponse.sendRedirect("/activity.html");
+
+	}	
+	
 	
 	
 	@POST
