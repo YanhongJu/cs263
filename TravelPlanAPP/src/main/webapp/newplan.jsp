@@ -89,8 +89,8 @@
 				<li><a
 					href="<%=userService.createLogoutURL(request.getRequestURI())%>">sign
 						out</a></li>
-				<li><a href="">MyBlog</a></li>
-				<li><a href="">MyPlans</a></li>
+				<li><a href="album.jsp">MyAlbum</a></li>
+				<li><a href="allplans.jsp">MyPlans</a></li>
 				<li><a href="newplan.jsp">PlanATrip</a>
 				<li><a href="welcom.jsp">Home</a> <!-- <ul>
 				<li><a href="">Create a new Plan</a></li>

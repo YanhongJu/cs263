@@ -15,20 +15,18 @@ public class Search {
 	@Path("/activity")
 	public void searchActivityPost(@FormParam("searchCity") String searchCity,			
 			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {		
-		String planName = request.getParameter("planName");			
-		response.sendRedirect("/searchactivity.jsp?query="+searchCity+"&planName="+planName);
-		
-
+		String planName = request.getParameter("planName");	
+		String date = request.getParameter("date");			
+		response.sendRedirect("/searchactivity.jsp?query="+searchCity+"&planName="+planName+"&date="+date);
 	}
 	
 	@POST
 	@Path("/food")
 	public void searchFoodPost(@FormParam("searchCity") String searchCity,			
 			@Context HttpServletRequest request,@Context HttpServletResponse response) throws Exception {		
-		String planName = request.getParameter("planName");			
-		response.sendRedirect("/searchfood.jsp?query="+searchCity+"&planName="+planName);
-		
-
+		String planName = request.getParameter("planName");	
+		String date = request.getParameter("date");	
+		response.sendRedirect("/searchfood.jsp?query="+searchCity+"&planName="+planName+"&date="+date);
 	}
 
 }

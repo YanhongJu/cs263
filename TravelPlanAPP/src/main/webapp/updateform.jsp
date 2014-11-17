@@ -86,12 +86,12 @@
 		pageContext.setAttribute("notes", notes);
 		String day = request.getParameter("day");
 		pageContext.setAttribute("day", day);
-		String date = request.getParameter("date");		
-		pageContext.setAttribute("date", date);
+		String startDate = request.getParameter("startDate");
+		pageContext.setAttribute("startDate", startDate);
 		
 	%>
 	<form
-		action="/context/enqueue/newactivity/?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}"
+		action="/context/enqueue/updateactivity/?planName=${fn:escapeXml(planName)}&startDate=${fn:escapeXml(startDate)}"
 		method="post">
 
 		<p>

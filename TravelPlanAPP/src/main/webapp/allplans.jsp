@@ -1,3 +1,5 @@
+
+
 <%@ page import="com.google.appengine.api.users.User"%>
 <%@ page import="com.google.appengine.api.users.UserService"%>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
@@ -30,28 +32,18 @@
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
 <title>Insert title here</title>
 <style type="text/css">
-#activityLink  a {
+#planLink  a {
 	color: black;
 }
 
-#activityLink  a:hover {
+#planLink  a:hover {
 	color: #0B4C5F;
 }
 
-#activityLink  a:active {
+#planLink  a:active {
 	color: #0B4C5F;
-}
-
-#addLink a {
-	color: #086A87;
-}
-
-#addLink a:hover {
-	color: #0B2F3A;
 }
 </style>
-
-
 
 </head>
 <body>
@@ -102,74 +94,49 @@
 		}
 	%>
 
-
-
-	<%
-		pageContext.setAttribute("userName", userName);
-		DatastoreService datastore = DatastoreServiceFactory
-				.getDatastoreService();
-		pageContext.setAttribute("userName", userName.toString());
-		Key userKey = KeyFactory.createKey("User", userName.toString());
-		String planName = request.getParameter("planName");
-		pageContext.setAttribute("planName", planName);
-		String startDate = request.getParameter("startDate");
-		pageContext.setAttribute("startDate", startDate);
-	%>
 	<div>
-		<h1 align="center">
-			<font size="4px"> Details about Plan </font>
-			${fn:escapeXml(planName)} <font size="4px"> :(Start at
-				${fn:escapeXml(startDate)}) </font>
-		</h1>
+
+		<h1 align="center">My PlanList:</h1>
+
+		<%
+			pageContext.setAttribute("userName", userName);
+			DatastoreService datastore = DatastoreServiceFactory
+					.getDatastoreService();
+			pageContext.setAttribute("userName", userName.toString());
+			Key userKey = KeyFactory.createKey("User", userName.toString());
+			Query q = new Query("Plan").setAncestor(userKey).addSort("date",
+					SortDirection.DESCENDING);
+			//Query q = new Query("Activity");
+			PreparedQuery pq = datastore.prepare(q);
+			for (Entity result : pq.asIterable()) {
+				String planName = (String) result.getProperty("planName");
+				pageContext.setAttribute("planName", planName);
+				Date date = (Date) result.getProperty("date");
+				String dateString = date.getYear() + "-" + date.getMonth()
+						+ "-" + date.getDate();
+				pageContext.setAttribute("date", dateString);
+		%>
+		<div id="planLink" style="position: relative; left: 250px;">
+			<form
+				action="/context/enqueue/deleteplan?planName=${fn:escapeXml(planName)}"
+				method="post">
+				<h1>
+					<a
+						href="plandetails.jsp?planName=${fn:escapeXml(planName)}&startDate=${fn:escapeXml(date)}">
+						${fn:escapeXml(planName)} </a> &nbsp;&nbsp;&nbsp;&nbsp; <font size="4px"> (Start at
+						${fn:escapeXml(date)})   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   <input type="submit"
+						value="Delete This Plan">
+					</font>
+				</h1>
+
+			</form>
+		</div>
+
+		<%
+			}
+		%>
+
 	</div>
-	<%
-		Key planKey = KeyFactory.createKey(userKey, "Plan", planName);
-
-		Query q = new Query("Activity").setAncestor(planKey).addSort("day",
-				SortDirection.ASCENDING);
-		PreparedQuery pq = datastore.prepare(q);
-
-		for (Entity detail : pq.asIterable()) {
-			String detailTitle = (String) detail.getProperty("title");
-			String day = (String) detail.getProperty("day");
-			pageContext.setAttribute("detailTitle", detailTitle);
-			pageContext.setAttribute("day", day);
-			String address = (String) detail.getProperty("address");
-			pageContext.setAttribute("address", address);
-			String notes = (String) detail.getProperty("notes");
-			pageContext.setAttribute("notes", notes);
-	%>
-	<div id="activityLink">
-		<form style="position: relative; left: 130px;"
-			action="/context/enqueue/deleteactivity?planName=${fn:escapeXml(planName)}&title=${fn:escapeXml(detailTitle)}&startDate=${fn:escapeXml(startDate)}"
-			method="post">
-
-			<p style="position: relative; left: 100x; font-size: 25px">
-				<a
-					href="updateform.jsp?planName=${fn:escapeXml(planName)}&day=${fn:escapeXml(day)}&address=${fn:escapeXml(address)}&notes=${fn:escapeXml(notes)}&title=${fn:escapeXml(detailTitle)}&startDate=${fn:escapeXml(startDate)}">
-					Day ${fn:escapeXml(day)}: ${fn:escapeXml(detailTitle)} </a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit"
-					value="Delete">
-			</p>
-
-		</form>
-		<p style="position: relative; left: 150px; font-size: 20px">Address:
-			${fn:escapeXml(address)}</p>
-		<p style="position: relative; left: 150px; font-size: 20px">Notes:
-			${fn:escapeXml(notes)}</p>
-
-	</div>
-
-
-	<%
-		}
-	%>
-	<div id="addLink">
-		<a style="position: relative; left: 130px; font-size: 25px"
-			href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">
-			Add A New Activity To This Plan</a>
-	</div>
-
 
 
 </body>
