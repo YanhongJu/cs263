@@ -21,15 +21,18 @@
 		<url-pattern>/context/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- <servlet>
-		<servlet-name>createPlanWorker</servlet-name>
-		<servlet-class>travelplanapp.travelplanapp.CreatePlanWorker</servlet-class>
+	<!-- <servlet> <servlet-name>createPlanWorker</servlet-name> <servlet-class>travelplanapp.travelplanapp.CreatePlanWorker</servlet-class> 
+		</servlet> <servlet-mapping> <servlet-name>createPlanWorker</servlet-name> 
+		<url-pattern>/createplanworker</url-pattern> </servlet-mapping> -->
+	<servlet>
+		<servlet-name>Serve</servlet-name>
+		<servlet-class>travelplanapp.travelplanapp.ServeBolb</servlet-class>
 	</servlet>
-	<servlet-mapping>
-		<servlet-name>createPlanWorker</servlet-name>
-		<url-pattern>/createplanworker</url-pattern>
-	</servlet-mapping> -->
 
+	<servlet-mapping>
+		<servlet-name>Serve</servlet-name>
+		<url-pattern>/serve</url-pattern>
+	</servlet-mapping>
 
 	<welcome-file-list>
 		<welcome-file>welcom.jsp</welcome-file>

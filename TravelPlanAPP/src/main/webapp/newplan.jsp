@@ -4,12 +4,16 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ page
+	import="com.google.appengine.api.blobstore.BlobstoreServiceFactory"%>
+<%@ page import="com.google.appengine.api.blobstore.BlobstoreService"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
 <style>
 #formpage {clear ="both";
+	
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -81,6 +85,7 @@
 		UserService userService = UserServiceFactory.getUserService();
 		User userName = userService.getCurrentUser();
 		pageContext.setAttribute("userName", userName);
+		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 	%>
 	<div id="container">
 		<div id="header" class="headernav">
@@ -98,10 +103,11 @@
 			</ul> --></li>
 			</ul>
 		</div>
-		<div class="formpage">
+		<div class="formpage" style="position: relative; left: 150px;">
 			<form name="form1" action="/context/enqueue/newplan" method="post">
 
 				<fieldset>
+					<h2>Please Enter Your Tip Information</h2>
 					<p>
 						Name Your New Trip:<input type="text" name="planName">
 
@@ -116,12 +122,27 @@
 					</select>
 
 					<p>
-						<input type="submit" value="Submit">
+						<input type="submit" value="Continue to plan details">
 					</p>
 
 				</fieldset>
 
 
+			</form>
+			<h2>You Can Also Upload A Plan File:</h2>
+			<form action="<%= blobstoreService.createUploadUrl("/context/enqueue/uploadplan") %>" method="post" enctype="multipart/form-data">
+				<fieldset>
+					<p>
+						Name Of The Trip:<input type="text" name="planName">
+
+					</p>
+					<p>
+						<input type="file" name="myFile"> <input type="submit"
+							value="Upload">
+
+					</p>
+
+				</fieldset>
 			</form>
 
 		</div>
