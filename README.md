@@ -6,6 +6,17 @@ http://starlit-tube-728.appspot.com/
 
 What have been done:
 
+ Show the photos in one albums as slides
+ 
+ What to do next:
+
+1. Allow users to add comments and title for each photo
+2. Fix the bugs in the photo album
+ 
+==========11/23==============
+
+What have been done:
+
 1. Allow user to create their photo album and upload images 
 2. store the images in blobstore
 3. create entity corresponding to the images
