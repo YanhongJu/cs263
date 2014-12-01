@@ -53,42 +53,50 @@ public class Worker {
 	@Path("/createalbum")
 	public void createAlbum(@Context HttpServletRequest httpRequest)
 			throws Exception {
-		String userName = httpRequest.getParameter("userName");		
+		String userName = httpRequest.getParameter("userName");
 		String albumName = httpRequest.getParameter("albumName");
 		String notes = httpRequest.getParameter("notes");
-		List<BlobKey> list = null;		
+		List<BlobKey> list = null;
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Key albumKey = KeyFactory.createKey("Album", userName+albumName);		
+		Key albumKey = KeyFactory.createKey("Album", userName + albumName);
 		Entity album = new Entity(albumKey);
-		album.setProperty("UserName",userName);
+		album.setProperty("UserName", userName);
 		album.setProperty("albumName", albumName);
 		album.setProperty("notes", notes);
 		album.setProperty("list", list);
 		datastore.put(album);
 	}
-	
+
 	@POST
 	@Path("/addphoto")
 	public void upload(@Context HttpServletRequest httpRequest)
 			throws Exception {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		String userName = httpRequest.getParameter("userName");		
-		String albumName = httpRequest.getParameter("albumName");
-		String blobKey = httpRequest.getParameter("blobKey");
-		Key albumKey = KeyFactory.createKey("Album", userName+albumName);
-		Entity album = datastore.get(albumKey);		
-		List<String> list = (ArrayList<String>) album.getProperty("list");
-		if(list == null)
-		{
-			list = new ArrayList<String>();
+
+		Transaction txn = datastore.beginTransaction();
+		try {
+			String userName = httpRequest.getParameter("userName");
+			String albumName = httpRequest.getParameter("albumName");
+			String blobKey = httpRequest.getParameter("blobKey");
+			Key albumKey = KeyFactory.createKey("Album", userName + albumName);
+			Entity album = datastore.get(albumKey);
+			List<String> list = (ArrayList<String>) album.getProperty("list");
+			if (list == null) {
+				list = new ArrayList<String>();
+			}
+			System.out.println("list size -----22222----------" + list.size());
+			list.add(blobKey);
+			System.out.println("list size ------33333-------" + list.size());
+			album.setProperty("list", list);
+			datastore.put(album);
+			txn.commit();
+		} finally {
+			if (txn.isActive()) {
+				txn.rollback();
+			}
 		}
-		System.out.println("list size -----22222----------" + list.size());
-		list.add(blobKey);		
-		System.out.println("list size ------33333-------" + list.size());
-		album.setProperty("list", list);
-		datastore.put(album);
 	}
 
 	@POST
@@ -146,9 +154,7 @@ public class Worker {
 			throws Exception {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Transaction txn = datastore.beginTransaction();
-		try {
-		
+
 		String userName = httpRequest.getParameter("userName");
 		String planName = httpRequest.getParameter("planName");
 		String activityTitle = httpRequest.getParameter("title");
@@ -158,12 +164,7 @@ public class Worker {
 		Key activityKey = KeyFactory.createKey(planKey, "Activity",
 				activityTitle);
 		datastore.delete(activityKey);
-		txn.commit();
-		} finally {
-		    if (txn.isActive()) {
-		        txn.rollback();
-		    }
-		}
+
 	}
 
 	@POST

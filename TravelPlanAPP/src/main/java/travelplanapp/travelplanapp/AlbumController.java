@@ -94,8 +94,8 @@ public class AlbumController {
 		String userName = userService.getCurrentUser().toString();
 		Map<String, List<BlobKey>> blobs = blobstoreService.getUploads(request);
 		String albumName = request.getParameter("albumName");
-		if (albumName == null)
-			response.sendRedirect("/welcom.jsp");
+		if (blobs == null || blobs.size() ==0)
+			response.sendRedirect("/album.jsp");
 		else {
 			List<BlobKey> blobKey = blobs.get("myFile");
 
@@ -116,7 +116,7 @@ public class AlbumController {
 
 			}
 			
-			response.sendRedirect("/onealbum.jsp?albumName="+albumName);
+			response.sendRedirect("/gallery.jsp?albumName="+albumName);
 			/*response.sendRedirect("/context/album/blobserve?userName="
 					+ userName + "&albumName=" + albumName);*/
 		}

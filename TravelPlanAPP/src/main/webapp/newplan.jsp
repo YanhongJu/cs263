@@ -129,7 +129,7 @@
 
 
 			</form>
-			<h2>You Can Also Upload A Plan File:</h2>
+			<%-- <h2>You Can Also Upload A Plan File:</h2>
 			<form action="<%= blobstoreService.createUploadUrl("/context/enqueue/uploadplan") %>" method="post" enctype="multipart/form-data">
 				<fieldset>
 					<p>
@@ -143,7 +143,7 @@
 					</p>
 
 				</fieldset>
-			</form>
+			</form> --%>
 
 		</div>
 	</div>

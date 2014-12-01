@@ -34,23 +34,29 @@ public class TestJson {
 
 	@GET
 	@Path("/testone/{albumName}")
-	public String test(@PathParam("albumName") String albumName) throws Exception {
+	public String test(@PathParam("albumName") String albumName)
+			throws Exception {
 		System.out.println("-----------albumName-------" + albumName);
-		UserService userService = UserServiceFactory.getUserService();		
+		UserService userService = UserServiceFactory.getUserService();
 		String userName = userService.getCurrentUser().toString();
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
-		Key albumKey = KeyFactory.createKey("Album", userName+albumName);
+		Key albumKey = KeyFactory.createKey("Album", userName + albumName);
 		Entity album = datastore.get(albumKey);
 		ImagesService imagesService = ImagesServiceFactory.getImagesService();
-		List<String> list = (List<String>) album.getProperty("list");	
+		List<String> list = (List<String>) album.getProperty("list");
 		String json = "{\"results\":[";
-		for(String s:list){
-			BlobKey blobKey = new BlobKey(s);			
-			String imageUrl = imagesService.getServingUrl(blobKey);
-			json+="{";
-			json+=("\"imageUrl\":\""+imageUrl);
-			json+="\"},";
+		for (String s : list) {
+			BlobKey blobKey = new BlobKey(s);
+			String imageUrl = null;
+			try {
+				imageUrl = imagesService.getServingUrl(blobKey, 800, false);
+				json += "{";
+				json += ("\"imageUrl\":\"" + imageUrl);
+				json += "\"},";
+			} catch (java.lang.IllegalArgumentException e) {
+			}
+
 		}
 		json = json.substring(0, json.length() - 1);
 		json += "]}";
@@ -85,8 +91,7 @@ public class TestJson {
 	@GET
 	@Path("/test")
 	public String getJsonTest() throws Exception {
-		
-		
+
 		UserService userService = UserServiceFactory.getUserService();
 		ImagesService imagesService = ImagesServiceFactory.getImagesService();
 		User userName = userService.getCurrentUser();
@@ -104,25 +109,31 @@ public class TestJson {
 		// and returned as JSON formatted string
 
 		for (Entity entity : pq.asIterable()) {
-			json+="{";
-			json+=("\"albumName\":\""+entity.getProperty("albumName")+"\",");
-			json+=("\"notes\":\""+entity.getProperty("notes")+"\",");
-			
-			List<String> list = (ArrayList<String>) entity.getProperty("list");			
-			String imageUrl;
-			if (list.get(0) != null) {
-				BlobKey blobKey = new BlobKey(list.get(0));
-				imageUrl = imagesService.getServingUrl(blobKey);
-			} else
+
+			List<String> list = (ArrayList<String>) entity.getProperty("list");
+			String imageUrl = null;
+			if (list != null) {
+				for (int i = 0; i < list.size();) {
+					BlobKey blobKey = new BlobKey(list.get(i));
+					try {
+						imageUrl = imagesService.getServingUrl(blobKey);
+						break;
+					} catch (java.lang.IllegalArgumentException e) {
+						i++;
+					}
+				}
+			}
+			if (imageUrl == null)
 				imageUrl = "images/no_image.png";
-			
-			json+=("\"imageUrl\":\""+imageUrl);	
-
-			
+			json += "{";
+			json += ("\"albumName\":\"" + entity.getProperty("albumName") + "\",");
+			json += ("\"notes\":\"" + entity.getProperty("notes") + "\",");
+			json += ("\"imageUrl\":\"" + imageUrl);
 			json += "\"},";
-		}
 
-		json = json.substring(0, json.length() - 1);
+		}
+		if (json.charAt(json.length() - 1) == ',')
+			json = json.substring(0, json.length() - 1);
 		json += "]}";
 
 		System.out.println(json);

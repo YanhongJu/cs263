@@ -9,7 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
+<link type="text/css" rel="stylesheet" href="stylesheets/header.css" />
 <style type="text/css">
 #newlink  a {
 	color: black;
@@ -39,7 +39,7 @@
 									.getJSON(
 											"context/json/test",
 											function(data) {
-
+												//alert("data");
 												for (var i = 0; i < data.results.length; i++) {
 													var albumName = data.results[i].albumName;
 													$("#list")
@@ -49,7 +49,7 @@
 																			+ '<h4 align="center">'
 																			+ data.results[i].albumName
 																			+ '</h4>'
-																			+ '<a href="onealbum.jsp?albumName='
+																			+ '<a href="gallery.jsp?albumName='
 																			+ data.results[i].albumName
 																			+ '">'
 																			+ '<img  style="padding-top: 10px;padding-left: 20px;width:200px;height:180px" src="'
