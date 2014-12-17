@@ -30,7 +30,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
-<title>Insert title here</title>
+<title>Trip Plan</title>
 <style type="text/css">
 #planLink  a {
 	color: black;
@@ -112,7 +112,7 @@
 				String planName = (String) result.getProperty("planName");
 				pageContext.setAttribute("planName", planName);
 				Date date = (Date) result.getProperty("date");
-				String dateString = date.getYear() + "-" + date.getMonth()
+				String dateString = (date.getYear()+1900) + "-" + (date.getMonth()+1)
 						+ "-" + date.getDate();
 				pageContext.setAttribute("date", dateString);
 		%>

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Trip Plan Albums</title>
 <link type="text/css" rel="stylesheet" href="stylesheets/header.css" />
 <style type="text/css">
 #newlink  a {
@@ -20,6 +20,18 @@
 }
 
 #newlink  a:active {
+	color: #0B4C5F;
+}
+
+#photo  a {
+	color: black;
+}
+
+#photo  a:hover {
+	color: #0B4C5F;
+}
+
+#photo  a:active {
 	color: #0B4C5F;
 }
 </style>
@@ -37,7 +49,7 @@
 
 							$
 									.getJSON(
-											"context/json/test",
+											"context/album/allalbums",
 											function(data) {
 												//alert("data");
 												for (var i = 0; i < data.results.length; i++) {
@@ -45,20 +57,22 @@
 													$("#list")
 															.append(
 																	//'<div onclick="showdetail(albumName);"'
-																	'<div id ="photo" class ="photo" style="width:240px; height:240px;float:left" >'
-																			+ '<h4 align="center">'
+																	'<div id ="photo" class ="photo" style="width:240px; height:260px;float:left" >'
+																			+ '<h4  align="center" style="margin-top:2px; margin-bottom:3px">'
 																			+ data.results[i].albumName
 																			+ '</h4>'
 																			+ '<a href="gallery.jsp?albumName='
 																			+ data.results[i].albumName
 																			+ '">'
-																			+ '<img  style="padding-top: 10px;padding-left: 20px;width:200px;height:180px" src="'
+																			+ '<img  style="padding-top: 0px;padding-left: 20px;width:200px;height:180px" src="'
 												+ data.results[i].imageUrl
 												+'" /><br/>'
 																			+ '</a>'
-																			+ '<p>'
+																			+ '<p  align="center" style="margin-top:2px; margin-bottom:3px">'
 																			+ data.results[i].notes
-																			+ '</p>'
+																			+ '</p> <form action="/context/album/deletealbum?albumName='
+																			+data.results[i].albumName
+																			+'" method="post"> <input align="center" type="submit" value="Delete"></form>'
 																			+ '</div>');
 													/* alert("UserName:"
 															+ i
@@ -71,8 +85,8 @@
 												$("#list")
 														.append(
 																'<div id="newlink" style="width:240px; height:240px;float:left" >'
-																		+ '<h4> <a href="newalbum.html"> New Album </a>'
-																		+ '</h4>'
+																		+ '<h2 style="margin:50px;"> <a href="newalbum.jsp">Add New Album </a>'
+																		+ '</h2>'
 																		+ '</div>');
 
 											});

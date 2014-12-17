@@ -17,7 +17,11 @@
 }
 </style>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Trip Plan New Plan</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+	
+</script>
 <script language="JavaScript">
 	window.onload = function() {
 		strYYYY = document.form1.YYYY.outerHTML;
@@ -85,7 +89,8 @@
 		UserService userService = UserServiceFactory.getUserService();
 		User userName = userService.getCurrentUser();
 		pageContext.setAttribute("userName", userName);
-		BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
+		BlobstoreService blobstoreService = BlobstoreServiceFactory
+				.getBlobstoreService();
 	%>
 	<div id="container">
 		<div id="header" class="headernav">
@@ -103,8 +108,11 @@
 			</ul> --></li>
 			</ul>
 		</div>
+
+
 		<div class="formpage" style="position: relative; left: 150px;">
-			<form name="form1" action="/context/enqueue/newplan" method="post">
+			<form name="form1" id="submitform" action="/context/enqueue/newplan"
+				method="post">
 
 				<fieldset>
 					<h2>Please Enter Your Tip Information</h2>
@@ -129,6 +137,38 @@
 
 
 			</form>
+
+
+			<script>
+				$("#submitform")
+						.submit(
+								function(event) {
+									var planName = document.forms["form1"]["planName"].value;
+									var validate;
+									event.preventDefault();		
+									if (planName == null || planName == "") {
+										alert("Please enter a planName");										
+									} else {
+										$
+												.getJSON(
+														"context/checkform/plan/"
+																+ planName,
+														function(data) {
+															//alert(data.result);
+															if (data.result == "true") {
+																alert("Plan already exists! Go to MyPlan to update or Create new plan with another name");
+																							
+															} else {
+																//alert("valid input");
+																$('#submitform').unbind('submit').submit();
+															}
+
+														});
+									}
+
+								});
+			</script>
+
 			<%-- <h2>You Can Also Upload A Plan File:</h2>
 			<form action="<%= blobstoreService.createUploadUrl("/context/enqueue/uploadplan") %>" method="post" enctype="multipart/form-data">
 				<fieldset>

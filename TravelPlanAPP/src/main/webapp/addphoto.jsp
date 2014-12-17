@@ -11,7 +11,7 @@
 
 <html>
 <head>
-<title>Upload Test</title>
+<title>Trip Plan Upload photos</title>
 </head>
 <body>
 	<%

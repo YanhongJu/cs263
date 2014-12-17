@@ -45,17 +45,11 @@ public class ServeBolb extends HttpServlet {
 			if (list != null) {
 
 				BlobKey key = new BlobKey(list.get(0));
-				System.out.println();
-				/*
-				 * res.setContentType("application/x-download");
-				 * res.setHeader("Content-Disposition",
-				 * "attachment; filename=ddd.pdf");
-				 */
+				System.out.println();				
 				blobstoreService.serve(key, res);
 
 			} else
-				res.sendRedirect("/welcom.jsp");
-			// System.out.println("xxxx");
+				res.sendRedirect("/welcom.jsp");			
 		} else
 			res.sendRedirect("/welcom1.jsp");
 

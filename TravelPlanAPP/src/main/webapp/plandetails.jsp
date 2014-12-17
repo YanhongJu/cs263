@@ -28,7 +28,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
-<title>Insert title here</title>
+<title>Trip Plan PlanDetails</title>
 <style type="text/css">
 #activityLink  a {
 	color: black;
@@ -166,7 +166,7 @@
 	%>
 	<div id="addLink">
 		<a style="position: relative; left: 130px; font-size: 25px"
-			href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">
+			href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(startDate)}">
 			Add A New Activity To This Plan</a>
 	</div>
 

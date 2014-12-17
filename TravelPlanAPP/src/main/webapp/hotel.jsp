@@ -3,7 +3,12 @@
 <%@ page import="com.google.appengine.api.users.UserServiceFactory"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ page import="java.util.List"%>
-
+<%@ page import="java.util.Arrays"%>
+<%@ page import="java.util.HashSet"%>
+<%@ page import="com.google.appengine.api.memcache.ErrorHandlers"%>
+<%@ page import="com.google.appengine.api.memcache.MemcacheService"%>
+<%@ page
+	import="com.google.appengine.api.memcache.MemcacheServiceFactory"%>
 <%@ page import="com.google.appengine.api.datastore.FetchOptions"%>
 <%@ page import="com.google.appengine.api.datastore.Key"%>
 <%@ page import="com.google.appengine.api.datastore.KeyFactory"%>
@@ -27,74 +32,19 @@
 <html>
 <head>
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
+<link type="text/css" rel="stylesheet" href="/stylesheets/innerNav.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-<style>
-.container {
-	width: 100%;
-	height: 100%;
-}
+<title>Trip Plan Hotel</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+	
+</script>
 
-.body {
-	width: 100%;
-	height: 100%;
-}
-
-.nav {
-	align: center;
-}
-
-.nav ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-}
-
-.nav li {
-	float: left;
-}
-
-.nav a:link, a:visited {
-	display: block;
-	width: 150px;
-	font-size: 120%;
-	font-weight: bold;
-	text-align: center;
-	padding: 4px;
-	text-decoration: none;
-}
-
-.nav a:hover, a:active {
-	background-color: #CCDDFF;
-}
-
-.leftbody {
-	float: left;
-	width: 65%;
-	height: 100%;
-}
-
-.rightbody {
-	float: left;
-	width: 35%;
-	height: 100%;
-}
-
-.rightbody p {
-	padding: 10px 10px;
-	margin: 10px 10px
-}
-</style>
 
 <script type="text/javascript"
 	src="https://maps.googleapis.com/maps/api/js?libraries=places"></script>
 <script type="text/javascript">
-	function initialize1() {
-		var input1 = document.getElementById('pac-input1');
-		var autocomplete1 = new google.maps.places.Autocomplete(input1);
-	}
-	google.maps.event.addDomListener(window, 'load', initialize1);
+	
 	function initialize() {
 		var input = /** @type {HTMLInputElement} */
 		(document.getElementById('pac-input'));
@@ -109,19 +59,18 @@
 
 	<%
 		UserService userService = UserServiceFactory.getUserService();
-		String userName = userService.getCurrentUser().toString();
-		pageContext.setAttribute("userName", userName);
-		String planName = request.getParameter("planName");
-		pageContext.setAttribute("planName", planName);
-		String date = request.getParameter("date");
-		pageContext.setAttribute("date", date);
+			String userName = userService.getCurrentUser().toString();
+			pageContext.setAttribute("userName", userName);
+			String planName = request.getParameter("planName");
+			pageContext.setAttribute("planName", planName);
+			String date = request.getParameter("date");
+			pageContext.setAttribute("date", date);
 	%>
 	<div class="container">
 		<div id="header" class="headernav">
 			<h3 float="right">Welcom! ${fn:escapeXml(userName)}</h3>
 			<ul>
-				<li><a
-					href="<%=userService.createLogoutURL("welcom.jsp")%>">Sign
+				<li><a href="<%=userService.createLogoutURL("welcom.jsp")%>">Sign
 						out</a></li>
 				<li><a href="album.jsp">MyAlbum</a></li>
 				<li><a href="allplans.jsp">MyPlans</a></li>
@@ -140,7 +89,7 @@
 					${fn:escapeXml(date)}):</font>
 			</p>
 			<p align="center">
-				<font face="verdana" size="6" color="#0B173B"> planName
+				<font face="verdana" size="6" color="#0B173B">
 					${fn:escapeXml(planName)}</font>
 			</p>
 		</div>
@@ -148,39 +97,40 @@
 			<div class="leftbody">
 				<div class="nav" align="center">
 					<ul>
-						<li><a style="color: black" href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Activities</a></li>
+						<li><a style="color: black"
+							href="activity.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Activities</a></li>
 						<!-- <li><a style="color: black" href="try.html?"
 							target="iframe_a">Activities</a></li> -->
 						<li><a style="color: black"
-							href="food.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Food &
-								Drinks</a></li>
-						<li><a style="color: black ; background: #0489B1"
-							href="">Hotels</a></li>
+							href="food.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Food
+								& Drinks</a></li>
+						<li><a style="color: black; background: #0489B1" href="">Hotels</a></li>
 						<li><a style="color: black"
 							href="flight.jsp?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}">Flights</a></li>
 
 					</ul>
 				</div>
 
-				<fieldset style="margin-left: 8px; margin-right: 2px">				
+				<fieldset style="margin-left: 8px; margin-right: 2px">
 
 
-					<form
-						action="/context/enqueue/newactivity?planName=${fn:escapeXml(planName)}"
+					<form id="submitform" name="form1"
+						action="/context/enqueue/newactivity?planName=${fn:escapeXml(planName)}&date=${fn:escapeXml(date)}"
 						method="post">
-						
+
 						<p>
-							Hotel Name:<input type="text" name="activityTitle" style="width: 80%">
+							Hotel Name:<input type="text" name="activityTitle"
+								style="width: 80%">
 						</p>
 						<p>
-							Hotel Address:<input id="pac-input" name="address" class="controls"
-								type="text" placeholder="Enter a location" style="width: 80%">
+							Hotel Address:<input id="pac-input" name="address"
+								class="controls" type="text" placeholder="Enter a location"
+								style="width: 80%">
 						</p>
 
-						<div style="position: relative;">
+						<div>
 							<p>Day</p>
-							<span style="margin-left: 100px; width: 18px; overflow: hidden;">
-								<select style="width: 118px; margin-left: -100px"
+							<span> <select name="day"
 								onchange="this.parentNode.nextSibling.value=this.value">
 									<option value="1">1</option>
 									<option value="2">2</option>
@@ -196,12 +146,7 @@
 									<option value="12">12</option>
 									<option value="13">13</option>
 									<option value="14">14</option>
-									<option value="15">15</option>
-									<option value="16">16</option>
 							</select>
-							</span><input name="day"
-								style="width: 100px; position: absolute; left: 0px;"
-								style="width:40%">
 						</div>
 						<p>
 							Notes:<input type="text" name="notes" style="width: 90%">
@@ -212,6 +157,22 @@
 						</p>
 
 					</form>
+					<script>
+						$("#submitform")
+								.submit(
+										function(event) {
+											var planName = document.forms["form1"]["activityTitle"].value;
+
+											event.preventDefault();
+											if (planName == null
+													|| planName == "") {
+												alert("Title can not be empty!");
+											} else
+												$('#submitform').unbind(
+														'submit').submit();
+
+										});
+					</script>
 
 				</fieldset>
 
@@ -219,40 +180,65 @@
 			</div>
 
 			<div class="rightbody">
+
 				<p>Plan Summary(start at ${fn:escapeXml(date)}):</p>
 				<%
-					DatastoreService datastore = DatastoreServiceFactory
-							.getDatastoreService();
-
-					/* 
-					datastore.get(planKey).getKey();
-					pageContext.setAttribute("planKey", planKey); */
-					// Run an ancestor query to ensure we see the most up-to-date
-					// view of the Greetings belonging to the selected Guestbook.
-					//Query q = new Query("Activity");
-
-					/* Filter propertyFilter = new FilterPredicate("user",
-							FilterOperator.EQUAL, userName.toString()); 
-					
-					.setFilter(propertyFilter)*/
-					Key userKey = KeyFactory.createKey("User", userName);
-					Key planKey = KeyFactory.createKey(userKey, "Plan", planName);
-					pageContext.setAttribute("planKey", planKey);
-					Query q = new Query("Activity").setAncestor(planKey).addSort("day", SortDirection.ASCENDING);
-					//Query q = new Query("Activity");
-					PreparedQuery pq = datastore.prepare(q);
-					for (Entity result : pq.asIterable()) {
-						String title = (String) result
-								.getProperty("title");
-						String day = (String) result.getProperty("day");
-						pageContext.setAttribute("parentKey", result.getParent());
-						pageContext.setAttribute("title", title);
-						pageContext.setAttribute("day", day);
+					MemcacheService syncCache = MemcacheServiceFactory
+							.getMemcacheService();
+					if (syncCache.get(planName) != null) {
+						String details = (String) syncCache.get(planName);
+						if (!details.equals("")) {
+							String[] list = details.split(",");
+							HashSet<String> h = new HashSet<String>(Arrays.asList(list));
+							list = h.toArray(new String[0]);
+							Arrays.sort(list);
+							for (String s : list) {
+								if (!s.equals("")) {
+									String[] subList = s.split("\t");
+									if (subList.length == 2) {
+										pageContext.setAttribute("title", subList[1]);
+										pageContext.setAttribute("day", subList[0]);
 				%>
 				<p>
 
-					Day ${fn:escapeXml(day)} :  	${fn:escapeXml(title)}
+					Day ${fn:escapeXml(day)} : ${fn:escapeXml(title)}
 					<%
+						}
+									}
+								}
+							}
+						} else {
+
+							DatastoreService datastore = DatastoreServiceFactory
+									.getDatastoreService();
+
+							Key userKey = KeyFactory.createKey("User", userName);
+							Key planKey = KeyFactory.createKey(userKey, "Plan", planName);
+							pageContext.setAttribute("planKey", planKey);
+							Query q = new Query("Activity").setAncestor(planKey).addSort(
+									"day", SortDirection.ASCENDING);
+							//Query q = new Query("Activity");
+							PreparedQuery pq = datastore.prepare(q);
+
+							String details = "";
+							for (Entity result : pq.asIterable()) {
+								String title = (String) result.getProperty("title");
+								String day = (String) result.getProperty("day");
+								pageContext.setAttribute("parentKey", result.getParent());
+								pageContext.setAttribute("title", title);
+								pageContext.setAttribute("day", day);
+								details = details + day + "\t" + title + ",";
+					%>
+				
+				<p>
+
+					Day ${fn:escapeXml(day)} : ${fn:escapeXml(title)}
+					<%
+						}
+							if(details.length()>0){
+								details = details.substring(0, details.length()-1);
+								syncCache.put(planName, details);
+							}
 						}
 					%>
 				

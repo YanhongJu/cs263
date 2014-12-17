@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>TripPlan Welcom Page</title>
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css"/>
 </head>
 <body>
@@ -42,11 +42,13 @@
 		<li><a
 			href="<%=userService.createLoginURL(request.getRequestURI())%>">SignIn</a></li>
 		<li><a
-			href="<%=userService.createLoginURL(request.getRequestURI())%>">MyBlogs</a></li>
+			href="<%=userService.createLoginURL(request.getRequestURI())%>">MyAlbum</a></li>
 		<li><a
 			href="<%=userService.createLoginURL(request.getRequestURI())%>">MyPlans</a></li>
 		<li><a
-			href="<%=userService.createLoginURL(request.getRequestURI())%>">NewTrip</a>
+			href="<%=userService.createLoginURL(request.getRequestURI())%>">PlanATrip</a>
+		<li><a
+			href="">Home</a>	
 			<!-- <ul>
 			<li><a href="">Create a new Plan</a></li>
 			<li><a href="">Edit a Plan</a></li>
@@ -60,7 +62,7 @@
 	%>
 	<div id="Layer1" clear="both"
 		style="position: absolute; width: 100%; height: 100%; z-index: -1">
-		<img src="images\back.jpg" height="100%" width="100%" />
+		<img src="images/back.jpg" height="100%" width="100%" />
 	</div >	
 
 </body>

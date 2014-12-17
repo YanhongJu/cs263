@@ -7,8 +7,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Image Gallery Theme - Jssor Slider, Slideshow with
-	Javascript Source Code</title>
+<title>Trip Plan Gallery </title>
 <link type="text/css" rel="stylesheet" href="/stylesheets/header.css" />
 <style type="text/css">
 
@@ -52,10 +51,9 @@
 
 							$
 									.getJSON(
-											"context/json/testone/"
+											"context/album/getone/"
 													+ getParam('albumName'),
-											function(data) {
-												//alert("data get ");
+											function(data) {												
 
 												for (var i = 0; i < data.results.length; i++) {
 													$("#list")
@@ -562,6 +560,8 @@
 			${fn:escapeXml(albumName)}  &nbsp;&nbsp;&nbsp;&nbsp;  <font size="4px"> <a 
 				href="addphoto.jsp?albumName=${fn:escapeXml(albumName)}">  Add
 					photos </a>
+					 &nbsp;&nbsp;<a 
+				href="deletephoto.jsp?albumName=${fn:escapeXml(albumName)}"> Delete photos </a>
 			</font>
 		</h1>
 	</div>

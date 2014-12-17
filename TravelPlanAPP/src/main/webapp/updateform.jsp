@@ -8,7 +8,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Trip Plan Update</title>
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js">
+	
+</script>
 <script language="JavaScript">
 	window.onload = function() {
 		strYYYY = document.form1.YYYY.outerHTML;
@@ -88,27 +92,24 @@
 		pageContext.setAttribute("day", day);
 		String startDate = request.getParameter("startDate");
 		pageContext.setAttribute("startDate", startDate);
-		
 	%>
-	<form
+	<form id="submitform" name="form1"
 		action="/context/enqueue/updateactivity/?planName=${fn:escapeXml(planName)}&startDate=${fn:escapeXml(startDate)}"
 		method="post">
 
+		<h2>Update information:</h2>
 		<p>
-			User:   ${fn:escapeXml(userName)}   ${fn:escapeXml(activityTitle)}
-		</p>
-		<p>
-			Title:<input type="text" name="activityTitle" style="width: 80%" value="${fn:escapeXml(activityTitle)}">
+			Title:<input type="text" name="activityTitle" style="width: 80%"
+				value="${fn:escapeXml(activityTitle)}">
 		</p>
 		<p>
 			Address:<input id="pac-input" name="address" class="controls"
-				type="text" style="width: 80%" value ="${fn:escapeXml(address)}">
+				type="text" style="width: 80%" value="${fn:escapeXml(address)}">
 		</p>
 
-		<div style="position: relative;">
+		<div>
 			<p>Day</p>
-			<span style="margin-left: 100px; width: 18px; overflow: hidden;">
-				<select style="width: 118px; margin-left: -100px" value="${fn:escapeXml(day)}"
+			<span> <select name="day"
 				onchange="this.parentNode.nextSibling.value=this.value">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -124,15 +125,11 @@
 					<option value="12">12</option>
 					<option value="13">13</option>
 					<option value="14">14</option>
-					<option value="15">15</option>
-					<option value="16">16</option>
 			</select>
-			</span><input name="day"
-				style="width: 100px; position: absolute; left: 0px;"
-				style="width:40%">
 		</div>
 		<p>
-			Notes:<input type="text" name="notes" style="width: 90%" value="${fn:escapeXml(notes)}">
+			Notes:<input type="text" name="notes" style="width: 90%"
+				value="${fn:escapeXml(notes)}">
 		</p>
 
 		<p>
@@ -140,6 +137,19 @@
 		</p>
 
 	</form>
+
+	<script>
+		$("#submitform").submit(function(event) {
+			var planName = document.forms["form1"]["activityTitle"].value;
+
+			event.preventDefault();
+			if (planName == null || planName == "") {
+				alert("Title can not be empty!");
+			} else
+				$('#submitform').unbind('submit').submit();
+
+		});
+	</script>
 
 </body>
 </html>
