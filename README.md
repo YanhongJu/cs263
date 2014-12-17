@@ -2,6 +2,61 @@ cs263 Project  TravelPlan
 
 http://starlit-tube-728.appspot.com/
 
+1. Welcome Page
+Sign in:    You can sign in with your googl account by clicking the sign in link on the upper right corner.
+            If you click other links without signning in, you will also be direced to the sign in page.
+Sign out:   After sign in, you can see a welcom information and also a sign out link. You can click to sign out.
+PlanATrip:  Create a new plan
+MyPlans:    View and update plans
+MyAlbum:    Create/delete/view albums
+
+2. New Trip Page
+Enter the name of your trip.  Name can not be empty or same with exsited plan. You will get an alert about this.
+Choose the start date of your trip.
+
+3. Add plan details
+   four tabs:  activities, food & drinks, hotel, flight
+   activity:  search for interesting places OR enter activity information directly
+   food & drinks: search for restaurants  OR enter restaurant information directly
+   hotel: enter hotel information
+   flight: enter flight informaion.  If you want an alert email about the flight, you need to enter a valid time as requested. Also you need to check the checkbox. You will get an alert email 3 hours before the flight.
+The right half page show the plan summary. Every time you add a new activity, the summary should be updated.
+
+4. Search Result Page
+At this page, you will see the results listed on the left page. Also there are markers on the google map.
+In order to add a place or restaurant to your plan, you can either click the photo or click the marker. Then you can click the "Add to plan" link in the information window.  In the following page, you can enter other information about this plan.
+
+5. Show all plans
+All the existed plan are listed and sorted by date.  You can click the delete button to delete the whole plan or Click the plan name to see the details of the plan.
+
+6. Show all details of a plan
+All the details about this plan are listed. The details are ordered by day number.
+You can update the detail by cliking the activity name or delete by cliking the button. Also you can add a new activity by cliking the link on the buttom.
+
+7. Show all albums
+All the created albums are shown in this page. The album cover should be the first photo in this album. If there is no photo in this album, the album shows" No available image"
+.   
+You can click the album to view all photos. Also you can click the "add new album" link to create a new album.
+
+8. Create new Album
+Enter the name of your album. Name can not be empty or same with exsited album.
+
+9. Gallery Page
+Show all the photos in a slid format. You can click the "add photo" link to add photos to this gallery or click "delete photo" link to a photo deletion page.
+
+10. Photo deletion Page
+list all the photos and each photo has a delete button. You  can delete any one photo per time. 
+
+
+
+
+
+
+
+
+
+
+
 ==========12/01==============
 
 What have been done:
